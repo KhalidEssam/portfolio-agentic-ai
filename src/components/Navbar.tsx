@@ -1,140 +1,122 @@
-import { Box, Stack, VStack, } from "@chakra-ui/react";
-import { useColorModeValue } from "@chakra-ui/color-mode";
-import { useSelector, useDispatch } from "react-redux";
-import { setActiveLink } from "../store/slices/navSlice";
-import { Link as RouterLink } from "react-router-dom";
-import type { RootState } from "@/store";
-import { selectLanguage } from "../store/slices/languageSlice";
-import { FaAngleDown } from "react-icons/fa";
-import { useState, useRef } from "react";
-import { type RefObject, useEffect } from "react";
+"use client";
 
+import { useState, useEffect } from "react";
+import { HiMenu, HiX, HiMoon, HiSun } from "react-icons/hi";
+import profileData from "@/data/profileData.json";
 
-export function useOutsideClick<T extends HTMLElement>(
-  ref: RefObject<T | null>,
-  handler: (event: MouseEvent | TouchEvent) => void
-) {
+const navLinks = [
+  { href: "#about", label: "About" },
+  { href: "#skills", label: "Skills" },
+  { href: "#projects", label: "Projects" },
+  { href: "#experience", label: "Experience" },
+  { href: "#contact", label: "Contact" },
+];
+
+export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [isDark, setIsDark] = useState(false);
+
   useEffect(() => {
-    function listener(event: MouseEvent | TouchEvent) {
-      const el = ref.current;
-      // ✅ Only trigger handler if click is OUTSIDE the element
-      if (!el || el.contains(event.target as Node)) {
-        return; // do nothing if inside dropdown
-      }
-      handler(event);
-    }
+    const stored = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
+    const dark = stored === "dark" || (!stored && prefersDark);
+    setIsDark(dark);
+    document.documentElement.classList.toggle("dark", dark);
+  }, []);
 
-    document.addEventListener("mousedown", listener);
-    document.addEventListener("touchstart", listener);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-    return () => {
-      document.removeEventListener("mousedown", listener);
-      document.removeEventListener("touchstart", listener);
-    };
-  }, [ref, handler]);
-}
+  const toggleTheme = () => {
+    const next = !isDark;
+    setIsDark(next);
+    document.documentElement.classList.toggle("dark", next);
+    localStorage.setItem("theme", next ? "dark" : "light");
+  };
 
-
-export const Navbar = () => {
-  const dispatch = useDispatch();
-  const { activeLink, links } = useSelector((state: RootState) => state.nav);
-  const lang = useSelector(selectLanguage);
-
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-
-  const dropdownRef = useRef<HTMLDivElement | null>(null);
-
-  useOutsideClick(dropdownRef, () => {
-    setOpenDropdown(null);
-  });
-
-
-
+  const handleNavClick = () => setIsOpen(false);
 
   return (
-    <Stack direction="column" zIndex={2} position="relative">
-      <Stack
-        direction={{ base: "column", md: "column", xl: "row" }}
-        gap={{ base: "1rem", md: "2rem", xl: "3.5rem" }}
-        color={"black"}
-      >
-        {links.map((link) => {
-          const isDropdownOpen = openDropdown === link.href;
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all ${
+        scrolled
+          ? "bg-white/90 dark:bg-dark-bg/90 backdrop-blur-md shadow-sm"
+          : "bg-transparent"
+      }`}
+    >
+      <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+        <a
+          href="#hero"
+          className="text-xl font-bold text-gray-900 dark:text-white"
+        >
+          {profileData.personal.name.split(" ")[0]}
+          <span className="text-primary-500">.</span>
+        </a>
 
-          return (
-            <Box key={link.href} position="relative" ref={dropdownRef}>
-              <RouterLink to={link.subNav ? "#" : link.href}>
-                <Box
-                  onClick={() =>
-                    link.subNav
-                      ? setOpenDropdown(isDropdownOpen ? null : link.href)
-                      : dispatch(setActiveLink(link.href))
-                  }
-                  fontSize="1.5rem"
-                  lineHeight="100%"
-                  fontWeight="500"
-                  bg={useColorModeValue("transparent", "gray.400")}
-                  color={
-                    activeLink === link.href
-                      ? useColorModeValue("rgba(255, 123, 57, 1)", "gray.100")
-                      : useColorModeValue("black", "gray.400")
-                  }
-                  // _hover={{ color: useColorModeValue("#226CFF", "gray.100") }}
-                  _active={{ color: useColorModeValue("#226CFF", "gray.100") }}
-                  display="inline-flex"
-                  alignItems="center"
-                  gap="0.3rem"
-                  cursor="pointer"
-                >
-                  {lang === "en" ? link.en : link.ar}
-                  {link.subNav && <FaAngleDown size="0.8rem" />}
-                </Box>
-              </RouterLink>
+        {/* Desktop links */}
+        <div className="hidden md:flex items-center gap-8">
+          {navLinks.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              className="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors text-sm font-medium"
+            >
+              {link.label}
+            </a>
+          ))}
+          <button
+            onClick={toggleTheme}
+            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-card transition-colors text-gray-600 dark:text-gray-300"
+            aria-label="Toggle theme"
+          >
+            {isDark ? <HiSun className="text-xl" /> : <HiMoon className="text-xl" />}
+          </button>
+        </div>
 
-              {/* SubNav dropdown */}
-              {link.subNav && isDropdownOpen && (
-                <VStack
-                  ref={dropdownRef} // 👈 attach ref here
-                  position="absolute"
-                  top="100%"
-                  mt={2}
-                  bg={useColorModeValue("white", "gray.700")}
-                  boxShadow="md"
-                  borderRadius="md"
-                  overflow="hidden"
-                  align="stretch"
-                  minW="200px"
-                  zIndex={10}
-                >
-                  {link.subNav.map((subLink) => (
-                    <RouterLink key={subLink.href} to={link.href + subLink.href}>
-                      <Box
-                        textAlign="start"
-                        px={4}
-                        py={2}
-                        onClick={() => {
-                          dispatch(setActiveLink(subLink.href));
-                          setOpenDropdown(null); // also close on click inside
-                        }}
-                        fontSize="1.2rem"
-                        fontWeight="500"
-                        color={
-                          activeLink === subLink.href
-                            ? useColorModeValue("#b3b3b3ff", "gray.100")
-                            : useColorModeValue("gray.800", "gray.200")
-                        }
-                        _hover={{ bg: useColorModeValue("gray.100", "gray.600") }}
-                      >
-                        {lang === "en" ? subLink.en : subLink.ar}
-                      </Box>
-                    </RouterLink>
-                  ))}
-                </VStack>
-              )}
-            </Box>
-          );
-        })}
-      </Stack>
-    </Stack>
+        {/* Mobile controls */}
+        <div className="flex md:hidden items-center gap-2">
+          <button
+            onClick={toggleTheme}
+            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-card transition-colors text-gray-600 dark:text-gray-300"
+            aria-label="Toggle theme"
+          >
+            {isDark ? <HiSun className="text-xl" /> : <HiMoon className="text-xl" />}
+          </button>
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-card transition-colors text-gray-600 dark:text-gray-300"
+            aria-label="Toggle menu"
+          >
+            {isOpen ? (
+              <HiX className="text-xl" />
+            ) : (
+              <HiMenu className="text-xl" />
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile menu */}
+      {isOpen && (
+        <div className="md:hidden bg-white dark:bg-dark-bg border-t border-gray-100 dark:border-dark-border">
+          {navLinks.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              onClick={handleNavClick}
+              className="block px-4 py-3 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-card text-sm font-medium"
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+      )}
+    </nav>
   );
-};
+}

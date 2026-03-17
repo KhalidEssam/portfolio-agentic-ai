@@ -1,0 +1,106 @@
+{
+  "personal": {
+    "name": "Your Name",
+    "title": "Full-Stack Developer & AI Enthusiast",
+    "summary": "Passionate full-stack developer with 5+ years of experience building scalable web applications and AI-powered solutions. I specialize in modern JavaScript/TypeScript ecosystems and have a strong interest in machine learning and natural language processing. I thrive on solving complex problems and delivering clean, maintainable code.",
+    "location": "San Francisco, CA",
+    "email": "hello@yourname.dev",
+    "phone": "+1 (555) 123-4567",
+    "website": "https://yourname.dev",
+    "avatarUrl": "/avatar.png"
+  },
+  "socialLinks": {
+    "github": "https://github.com/yourname",
+    "linkedin": "https://linkedin.com/in/yourname",
+    "twitter": "https://twitter.com/yourname"
+  },
+  "availability": {
+    "status": "Open to opportunities",
+    "preferredRoles": ["Senior Full-Stack Developer", "Lead Engineer", "AI/ML Engineer"],
+    "workTypes": ["Full-time", "Contract", "Consulting"],
+    "remote": true,
+    "relocation": false,
+    "noticePeriod": "2 weeks"
+  },
+  "skills": {
+    "Frontend": ["React", "Next.js", "TypeScript", "Tailwind CSS", "Vue.js", "HTML5/CSS3"],
+    "Backend": ["Node.js", "Express", "Python", "FastAPI", "PostgreSQL", "MongoDB"],
+    "AI/ML": ["TensorFlow", "PyTorch", "LangChain", "OpenAI API", "Gemini API", "RAG Systems"],
+    "DevOps": ["Docker", "AWS", "Vercel", "GitHub Actions", "CI/CD", "Terraform"],
+    "Tools": ["Git", "VS Code", "Figma", "Jira", "Postman", "Linux"]
+  },
+  "experience": [
+    {
+      "company": "TechCorp Inc.",
+      "role": "Senior Full-Stack Developer",
+      "period": "2022 - Present",
+      "location": "San Francisco, CA (Remote)",
+      "description": "Lead developer for the company's flagship SaaS product serving 50K+ users. Architected a microservices backend, built a real-time collaboration feature, and reduced page load times by 60%. Mentored a team of 4 junior developers.",
+      "technologies": ["React", "Node.js", "PostgreSQL", "AWS", "Docker"]
+    },
+    {
+      "company": "StartupXYZ",
+      "role": "Full-Stack Developer",
+      "period": "2020 - 2022",
+      "location": "New York, NY",
+      "description": "Core developer at an early-stage startup. Built the MVP from scratch, implemented payment integration with Stripe, and developed an AI-powered recommendation engine that increased user engagement by 35%.",
+      "technologies": ["Vue.js", "Python", "FastAPI", "MongoDB", "TensorFlow"]
+    },
+    {
+      "company": "WebAgency Co.",
+      "role": "Junior Developer",
+      "period": "2019 - 2020",
+      "location": "Austin, TX",
+      "description": "Developed responsive websites and web applications for diverse clients. Delivered 20+ projects on time and within budget. Gained experience in client communication and agile methodologies.",
+      "technologies": ["React", "Node.js", "Express", "MySQL", "AWS"]
+    }
+  ],
+  "projects": [
+    {
+      "name": "AI Portfolio Chat",
+      "description": "A modern portfolio website with an AI-powered chatbot that answers questions about the owner using RAG-style grounding with Google Gemini API.",
+      "technologies": ["Next.js", "TypeScript", "Tailwind CSS", "Gemini API"],
+      "link": "https://github.com/yourname/ai-portfolio",
+      "live": "https://yourname.dev"
+    },
+    {
+      "name": "CollabBoard",
+      "description": "Real-time collaborative whiteboard application with drawing tools, sticky notes, and video chat integration. Supports up to 50 concurrent users per room.",
+      "technologies": ["React", "WebSocket", "Canvas API", "WebRTC", "Node.js"],
+      "link": "https://github.com/yourname/collabboard",
+      "live": "https://collabboard.app"
+    },
+    {
+      "name": "SmartRecipe",
+      "description": "AI-powered recipe suggestion app that generates personalized meal plans based on dietary preferences, available ingredients, and nutritional goals.",
+      "technologies": ["Python", "FastAPI", "React Native", "OpenAI API", "PostgreSQL"],
+      "link": "https://github.com/yourname/smartrecipe",
+      "live": ""
+    },
+    {
+      "name": "DevMetrics",
+      "description": "Developer productivity analytics dashboard that integrates with GitHub, Jira, and Slack to provide insights on team performance and code quality metrics.",
+      "technologies": ["Next.js", "D3.js", "Node.js", "GraphQL", "MongoDB"],
+      "link": "https://github.com/yourname/devmetrics",
+      "live": "https://devmetrics.io"
+    }
+  ],
+  "education": [
+    {
+      "institution": "University of California, Berkeley",
+      "degree": "B.S. Computer Science",
+      "period": "2015 - 2019",
+      "description": "Graduated with honors. Focus on software engineering and artificial intelligence. Senior thesis on natural language processing for code generation."
+    }
+  ],
+  "certifications": [
+    "AWS Certified Solutions Architect – Associate",
+    "Google Cloud Professional Data Engineer",
+    "Meta Front-End Developer Professional Certificate"
+  ],
+  "languages": [
+    { "language": "English", "proficiency": "Native" },
+    { "language": "Spanish", "proficiency": "Conversational" }
+  ],
+  "careerGoals": "I aim to transition into a leadership role where I can combine my technical expertise with team management. I'm particularly interested in building AI-powered products that make technology more accessible. Long-term, I want to contribute to open-source AI tools and mentor the next generation of developers."
+}
