@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getProfileData, buildSystemPrompt } from "@/lib/profileLoader";
 
-const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.0-flash";
+const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
 const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
-
+console.log("GEMINI_MODEL:", GEMINI_MODEL);
 // Simple in-memory rate limiter
 const rateLimit = new Map<string, { count: number; resetTime: number }>();
 const RATE_LIMIT_WINDOW = 60_000; // 1 minute
@@ -46,15 +46,16 @@ export async function POST(request: NextRequest) {
     if (!checkRateLimit(ip)) {
       return NextResponse.json(
         { error: "Too many requests. Please try again later." },
-        { status: 429 }
+        { status: 429 },
       );
     }
 
     const apiKey = process.env.GEMINI_API_KEY;
+    console.log("GEMINI_API_KEY:", apiKey);
     if (!apiKey) {
       return NextResponse.json(
         { error: "AI service is not configured." },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -64,7 +65,7 @@ export async function POST(request: NextRequest) {
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
       return NextResponse.json(
         { error: "Messages are required." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -76,7 +77,7 @@ export async function POST(request: NextRequest) {
     ) {
       return NextResponse.json(
         { error: "Message too long. Please keep it under 2000 characters." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -88,7 +89,7 @@ export async function POST(request: NextRequest) {
       (msg: { role: string; content: string }) => ({
         role: msg.role === "assistant" ? "model" : "user",
         parts: [{ text: msg.content }],
-      })
+      }),
     );
 
     const geminiPayload = {
@@ -133,7 +134,7 @@ export async function POST(request: NextRequest) {
       console.error("Gemini API error:", response.status, errorData);
       return NextResponse.json(
         { error: "Failed to get a response from AI. Please try again." },
-        { status: 502 }
+        { status: 502 },
       );
     }
 
@@ -147,7 +148,7 @@ export async function POST(request: NextRequest) {
     console.error("Chat API error:", error);
     return NextResponse.json(
       { error: "An unexpected error occurred." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

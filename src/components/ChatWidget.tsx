@@ -13,7 +13,7 @@ interface Message {
 const WELCOME_MESSAGE: Message = {
   role: "assistant",
   content:
-    "Hi there! 👋 I'm the AI assistant for this portfolio. Ask me anything about my experience, skills, projects, or how to get in touch!",
+    "Hi there! 👋 I'm the AI assistant for this amazing engineer. Ask me anything about my experience, skills, projects, or how to get in touch!",
 };
 
 export default function ChatWidget() {
@@ -106,11 +106,10 @@ export default function ChatWidget() {
       {/* Floating button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-105 ${
-          isOpen
+        className={`fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-105 ${isOpen
             ? "bg-gray-600 hover:bg-gray-700"
             : "bg-primary-600 hover:bg-primary-700"
-        } text-white`}
+          } text-white`}
         aria-label={isOpen ? "Close chat" : "Open chat"}
       >
         {isOpen ? (
@@ -126,7 +125,7 @@ export default function ChatWidget() {
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 bg-primary-600 text-white">
             <div>
-              <h3 className="font-semibold text-sm">AI Portfolio Assistant</h3>
+              <h3 className="font-semibold text-sm">Khaled's Agentic AI Assistant</h3>
               <p className="text-xs text-primary-100">
                 Ask me about my experience & skills
               </p>
@@ -149,11 +148,10 @@ export default function ChatWidget() {
                 className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
               >
                 <div
-                  className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
-                    msg.role === "user"
+                  className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${msg.role === "user"
                       ? "bg-primary-600 text-white rounded-br-md"
                       : "bg-gray-100 dark:bg-dark-card text-gray-800 dark:text-gray-200 rounded-bl-md"
-                  }`}
+                    }`}
                 >
                   {msg.role === "assistant" ? (
                     <div className="prose prose-sm dark:prose-invert max-w-none [&>p]:mb-1 [&>p:last-child]:mb-0 [&>ul]:mb-1 [&>ol]:mb-1">
