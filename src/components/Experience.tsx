@@ -1,95 +1,111 @@
 "use client";
 
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 import profileData from "@/data/profileData.json";
+import SectionHeader from "./ui/SectionHeader";
+import AnimatedSection from "./ui/AnimatedSection";
+import { SPRING } from "@/lib/animations";
 
 export default function Experience() {
   const { experience, education } = profileData;
+  const lineRef    = useRef(null);
+  const lineInView = useInView(lineRef, { once: true, margin: "-60px 0px" });
 
   return (
-    <section
-      id="experience"
-      className="py-20 px-4 bg-gray-50 dark:bg-dark-card"
-    >
+    <section id="experience" className="py-20 px-4">
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-3xl sm:text-4xl font-bold text-center text-gray-900 dark:text-white mb-4">
-          Experience
-        </h2>
-        <div className="w-20 h-1 bg-primary-500 mx-auto mb-12 rounded-full" />
+        <SectionHeader index="05" label="Experience" title="Where I've Worked" />
 
-        {/* Work Experience Timeline */}
-        <div className="relative">
-          <div className="absolute left-4 md:left-1/2 md:-translate-x-px top-0 bottom-0 w-0.5 bg-primary-200 dark:bg-primary-800" />
+        {/* Timeline */}
+        <div className="relative pl-6 mt-2" ref={lineRef}>
+          {/* Animated line */}
+          <motion.div
+            className="absolute left-0 top-2 bottom-2 w-px origin-top"
+            style={{
+              background: "linear-gradient(180deg,#00ff88 0%,#7c3aed 60%,transparent 100%)",
+            }}
+            initial={{ scaleY: 0 }}
+            animate={lineInView ? { scaleY: 1 } : { scaleY: 0 }}
+            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+          />
 
-          {experience.map((exp, i) => (
-            <div
-              key={i}
-              className={`relative mb-10 md:w-1/2 ${
-                i % 2 === 0
-                  ? "md:pr-12 md:ml-0"
-                  : "md:pl-12 md:ml-auto"
-              }`}
-            >
-              <div
-                className={`absolute top-1 w-3 h-3 rounded-full bg-primary-500 border-4 border-white dark:border-dark-card ${
-                  i % 2 === 0
-                    ? "left-[10px] md:left-auto md:-right-[6.5px]"
-                    : "left-[10px] md:-left-[6.5px]"
-                }`}
-              />
+          {experience.map((exp, i) => {
+            const isActive = i === 0;
+            return (
+              <AnimatedSection key={i} delay={i * 0.1} className="relative mb-6">
+                {/* Dot */}
+                <div
+                  className={`absolute -left-[29px] top-5 w-2.5 h-2.5 rounded-full border-2 ${isActive ? "animate-pulse-dot" : ""}`}
+                  style={{
+                    background:   isActive ? "#00ff88" : "#080808",
+                    borderColor:  isActive ? "#00ff88" : "rgba(255,255,255,0.15)",
+                    boxShadow:    isActive ? "0 0 12px rgba(0,255,136,0.50)" : "none",
+                  }}
+                />
 
-              <div className="ml-10 md:ml-0 bg-white dark:bg-dark-bg rounded-xl p-6 shadow-sm border border-gray-100 dark:border-dark-border">
-                <span className="text-sm font-medium text-primary-600 dark:text-primary-400">
-                  {exp.period}
-                </span>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mt-1">
-                  {exp.role}
-                </h3>
-                <p className="text-gray-500 dark:text-gray-400 text-sm mb-3">
-                  {exp.company} &middot; {exp.location}
-                </p>
-                <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-3">
-                  {exp.description}
-                </p>
-                <div className="flex flex-wrap gap-1.5">
-                  {exp.technologies.map((tech) => (
-                    <span
-                      key={tech}
-                      className="px-2 py-0.5 bg-gray-100 dark:bg-dark-card text-gray-600 dark:text-gray-400 rounded text-xs"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ))}
+                <motion.div
+                  className="rounded-xl p-5"
+                  style={{
+                    background: isActive ? "rgba(0,255,136,0.02)" : "#0d0d12",
+                    border: `1px solid ${isActive ? "rgba(0,255,136,0.22)" : "rgba(255,255,255,0.07)"}`,
+                  }}
+                  whileHover={{ x: 5, borderColor: "rgba(255,255,255,0.14)" }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <p className="text-[10px] font-semibold mb-1" style={{ color: "#00ff88" }}>
+                    {exp.period}
+                  </p>
+                  <h3 className="text-sm font-bold text-white mb-0.5">{exp.role}</h3>
+                  <p className="text-xs mb-3" style={{ color: "#64748b" }}>
+                    {exp.company} · {exp.location}
+                  </p>
+                  <p className="text-xs leading-[1.7] mb-3" style={{ color: "#475569" }}>
+                    {exp.description}
+                  </p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {exp.technologies.map((tech) => (
+                      <span
+                        key={tech}
+                        className="px-2 py-0.5 rounded text-[9px] font-medium"
+                        style={{
+                          background: "rgba(255,255,255,0.03)",
+                          border: "1px solid rgba(255,255,255,0.07)",
+                          color: "#475569",
+                        }}
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </motion.div>
+              </AnimatedSection>
+            );
+          })}
         </div>
 
         {/* Education */}
-        <h2 className="text-3xl sm:text-4xl font-bold text-center text-gray-900 dark:text-white mt-20 mb-4">
-          Education
-        </h2>
-        <div className="w-20 h-1 bg-primary-500 mx-auto mb-12 rounded-full" />
-
-        {education.map((edu, i) => (
-          <div
-            key={i}
-            className="bg-white dark:bg-dark-bg rounded-xl p-6 shadow-sm border border-gray-100 dark:border-dark-border max-w-2xl mx-auto"
-          >
-            <span className="text-sm font-medium text-primary-600 dark:text-primary-400">
-              {edu.period}
-            </span>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mt-1">
-              {edu.degree}
-            </h3>
-            <p className="text-gray-500 dark:text-gray-400 text-sm mb-2">
-              {edu.institution}
-            </p>
-            <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-              {edu.description}
-            </p>
-          </div>
-        ))}
+        <SectionHeader index="" label="" title="Education" />
+        <div className="space-y-4 mt-2">
+          {education.map((edu, i) => (
+            <AnimatedSection key={i} delay={i * 0.1}>
+              <div
+                className="rounded-xl p-5"
+                style={{
+                  background: "#0d0d12",
+                  border: "1px solid rgba(255,255,255,0.07)",
+                }}
+              >
+                <p className="text-[10px] font-semibold mb-1" style={{ color: "#00ff88" }}>
+                  {edu.period || "Graduated"}
+                </p>
+                <h3 className="text-sm font-bold text-white mb-0.5">{edu.degree}</h3>
+                <p className="text-xs mb-2" style={{ color: "#64748b" }}>{edu.institution}</p>
+                <p className="text-xs" style={{ color: "#475569" }}>{edu.description}</p>
+              </div>
+            </AnimatedSection>
+          ))}
+        </div>
       </div>
     </section>
   );

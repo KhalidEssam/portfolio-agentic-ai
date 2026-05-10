@@ -1,129 +1,119 @@
 "use client";
 
-import profileData from "@/data/profileData.json";
-import { HiMail, HiPhone, HiGlobe, HiLocationMarker } from "react-icons/hi";
+import { motion } from "framer-motion";
+import { HiMail, HiPhone, HiLocationMarker, HiGlobe } from "react-icons/hi";
 import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
+import profileData from "@/data/profileData.json";
+import AnimatedSection from "./ui/AnimatedSection";
+import { SPRING } from "@/lib/animations";
 
 export default function Contact() {
-  const { personal, socialLinks, availability } = profileData;
+  const { personal, socialLinks } = profileData;
+
+  const CARDS = [
+    { icon: <HiMail className="text-base" />,          label: "Email",    value: personal.email,    href: `mailto:${personal.email}`   },
+    { icon: <HiPhone className="text-base" />,         label: "Phone",    value: personal.phone,    href: `tel:${personal.phone}`      },
+    { icon: <HiLocationMarker className="text-base" />,label: "Location", value: `${personal.location} · Remote`, href: null          },
+    { icon: <HiGlobe className="text-base" />,         label: "Website",  value: personal.website,  href: personal.website             },
+  ];
+
+  const SOCIALS = [
+    { href: socialLinks.github,   icon: <FaGithub />,   label: "GitHub"   },
+    { href: socialLinks.linkedin, icon: <FaLinkedin />, label: "LinkedIn" },
+    { href: socialLinks.twitter,  icon: <FaTwitter />,  label: "Twitter"  },
+  ];
 
   return (
-    <section id="contact" className="py-20 px-4">
-      <div className="max-w-4xl mx-auto">
-        <h2 className="text-3xl sm:text-4xl font-bold text-center text-gray-900 dark:text-white mb-4">
-          Get in Touch
-        </h2>
-        <div className="w-20 h-1 bg-primary-500 mx-auto mb-4 rounded-full" />
-        <p className="text-center text-gray-500 dark:text-gray-400 mb-12 max-w-lg mx-auto">
-          I&apos;m currently{" "}
-          <span className="text-primary-600 dark:text-primary-400 font-medium">
-            {availability.status.toLowerCase()}
-          </span>
-          . Feel free to reach out!
-        </p>
+    <section
+      id="contact"
+      className="py-20 px-4"
+      style={{
+        background: "rgba(255,255,255,0.01)",
+        borderTop: "1px solid rgba(255,255,255,0.07)",
+      }}
+    >
+      <div className="max-w-6xl mx-auto">
+        <div className="max-w-[600px] mx-auto text-center">
+          <AnimatedSection>
+            <span className="block text-[10px] font-bold tracking-[2px] uppercase mb-1" style={{ color: "#00ff88" }}>
+              06 — Contact
+            </span>
+            <h2 className="text-[32px] font-black text-white mb-3">Let&apos;s Build Together</h2>
+            <p className="text-sm mb-10" style={{ color: "#64748b" }}>
+              Currently open to full-time, contract, and consulting roles. Drop me a line.
+            </p>
+          </AnimatedSection>
 
-        <div className="grid sm:grid-cols-2 gap-6 mb-12">
-          <a
-            href={`mailto:${personal.email}`}
-            className="flex items-center gap-4 p-5 bg-white dark:bg-dark-card rounded-xl shadow-sm border border-gray-100 dark:border-dark-border hover:border-primary-300 dark:hover:border-primary-700 transition-colors"
-          >
-            <div className="w-12 h-12 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center text-primary-600 dark:text-primary-400">
-              <HiMail className="text-xl" />
-            </div>
-            <div>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Email</p>
-              <p className="font-medium text-gray-900 dark:text-white">
-                {personal.email}
-              </p>
-            </div>
-          </a>
-
-          <a
-            href={`tel:${personal.phone}`}
-            className="flex items-center gap-4 p-5 bg-white dark:bg-dark-card rounded-xl shadow-sm border border-gray-100 dark:border-dark-border hover:border-primary-300 dark:hover:border-primary-700 transition-colors"
-          >
-            <div className="w-12 h-12 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center text-primary-600 dark:text-primary-400">
-              <HiPhone className="text-xl" />
-            </div>
-            <div>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Phone</p>
-              <p className="font-medium text-gray-900 dark:text-white">
-                {personal.phone}
-              </p>
-            </div>
-          </a>
-
-          <a
-            href={personal.website}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-4 p-5 bg-white dark:bg-dark-card rounded-xl shadow-sm border border-gray-100 dark:border-dark-border hover:border-primary-300 dark:hover:border-primary-700 transition-colors"
-          >
-            <div className="w-12 h-12 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center text-primary-600 dark:text-primary-400">
-              <HiGlobe className="text-xl" />
-            </div>
-            <div>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                Website
-              </p>
-              <p className="font-medium text-gray-900 dark:text-white">
-                {personal.website}
-              </p>
-            </div>
-          </a>
-
-          <div className="flex items-center gap-4 p-5 bg-white dark:bg-dark-card rounded-xl shadow-sm border border-gray-100 dark:border-dark-border">
-            <div className="w-12 h-12 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center text-primary-600 dark:text-primary-400">
-              <HiLocationMarker className="text-xl" />
-            </div>
-            <div>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                Location
-              </p>
-              <p className="font-medium text-gray-900 dark:text-white">
-                {personal.location}
-              </p>
-            </div>
+          {/* Contact cards */}
+          <div className="grid sm:grid-cols-2 gap-3 mb-8 text-left">
+            {CARDS.map(({ icon, label, value, href }, i) => {
+              const inner = (
+                <motion.div
+                  key={label}
+                  className="rounded-xl p-4 flex items-center gap-3"
+                  style={{
+                    background: "#0d0d12",
+                    border: "1px solid rgba(255,255,255,0.07)",
+                  }}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ ...SPRING, delay: i * 0.09 }}
+                  whileHover={{ y: -3, borderColor: "rgba(0,255,136,0.22)", boxShadow: "0 10px 30px rgba(0,255,136,0.07)" }}
+                >
+                  <div
+                    className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
+                    style={{
+                      background: "rgba(0,255,136,0.08)",
+                      border: "1px solid rgba(0,255,136,0.22)",
+                      color: "#00ff88",
+                    }}
+                  >
+                    {icon}
+                  </div>
+                  <div>
+                    <p className="text-[9px] uppercase tracking-[1px] mb-0.5" style={{ color: "#64748b" }}>
+                      {label}
+                    </p>
+                    <p className="text-xs font-semibold text-white">{value}</p>
+                  </div>
+                </motion.div>
+              );
+              return href ? (
+                <a key={label} href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer">
+                  {inner}
+                </a>
+              ) : (
+                <div key={label}>{inner}</div>
+              );
+            })}
           </div>
-        </div>
 
-        <div className="text-center">
-          <p className="text-gray-500 dark:text-gray-400 mb-4">
-            Find me online
-          </p>
-          <div className="flex items-center justify-center gap-6">
-            {socialLinks.github && (
-              <a
-                href={socialLinks.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-12 h-12 rounded-full bg-gray-100 dark:bg-dark-card flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-primary-100 hover:text-primary-600 dark:hover:bg-primary-900/30 dark:hover:text-primary-400 transition-colors text-xl"
-                aria-label="GitHub"
-              >
-                <FaGithub />
-              </a>
-            )}
-            {socialLinks.linkedin && (
-              <a
-                href={socialLinks.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-12 h-12 rounded-full bg-gray-100 dark:bg-dark-card flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-primary-100 hover:text-primary-600 dark:hover:bg-primary-900/30 dark:hover:text-primary-400 transition-colors text-xl"
-                aria-label="LinkedIn"
-              >
-                <FaLinkedin />
-              </a>
-            )}
-            {socialLinks.twitter && (
-              <a
-                href={socialLinks.twitter}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-12 h-12 rounded-full bg-gray-100 dark:bg-dark-card flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-primary-100 hover:text-primary-600 dark:hover:bg-primary-900/30 dark:hover:text-primary-400 transition-colors text-xl"
-                aria-label="Twitter"
-              >
-                <FaTwitter />
-              </a>
+          {/* Social buttons */}
+          <div className="flex gap-3 justify-center">
+            {SOCIALS.map(({ href, icon, label }, i) =>
+              href ? (
+                <motion.a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="w-11 h-11 rounded-xl flex items-center justify-center text-base"
+                  style={{
+                    background: "#0d0d12",
+                    border: "1px solid rgba(255,255,255,0.07)",
+                    color: "#64748b",
+                  }}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ ...SPRING, delay: 0.35 + i * 0.08 }}
+                  whileHover={{ y: -3, borderColor: "rgba(0,255,136,0.22)", color: "#00ff88", boxShadow: "0 8px 20px rgba(0,255,136,0.10)" }}
+                >
+                  {icon}
+                </motion.a>
+              ) : null
             )}
           </div>
         </div>
