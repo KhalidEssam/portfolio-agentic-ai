@@ -50,9 +50,10 @@ Font stays **Inter** (already configured). No font changes. Heading weights bump
 src/
   components/
     ui/
-      AnimatedSection.tsx   — IntersectionObserver scroll-reveal wrapper (Framer Motion)
-      GlowCard.tsx          — Card with configurable green/violet border glow on hover
-      SectionHeader.tsx     — Numbered label (e.g. "01 — About") + h2 + green underline
+      AnimatedSection.tsx      — IntersectionObserver scroll-reveal wrapper (Framer Motion)
+      GlowCard.tsx             — Card with configurable green/violet border glow on hover
+      SectionHeader.tsx        — Numbered label (e.g. "01 — About") + h2 + green underline
+      ScrollProgressPill.tsx   — Fixed floating glass pill scroll indicator (right edge)
   hooks/
     useActiveSection.ts     — IntersectionObserver → returns currently visible section id
   lib/
@@ -85,7 +86,7 @@ src/lib/profileLoader.ts
 src/data/profileData.json
 ```
 
-The **section order in `page.tsx` gains one new import**: `Founder` (the Rawaq section), inserted between `About` and `Skills`. `page.tsx` itself gets a single new import line — no structural changes.
+The **section order in `page.tsx` gains two new imports**: `Founder` (the Rawaq section, inserted between `About` and `Skills`) and `ScrollProgressPill` (rendered outside `<main>`, alongside `Navbar`, `Footer`, and `ChatWidget`). `page.tsx` gets two new import lines — no structural changes beyond that.
 
 ---
 
@@ -112,6 +113,20 @@ The **section order in `page.tsx` gains one new import**: `Founder` (the Rawaq s
 - Observes all section elements by id (`about`, `rawaq`, `skills`, `projects`, `experience`, `contact`)
 - Returns the id of the topmost visible section
 - Used exclusively by `Navbar` to drive the active link indicator
+
+### `ScrollProgressPill.tsx`
+- Fixed position: `right: 20px`, vertically centered (`top: 50%`, `transform: translateY(-50%)`)
+- Hidden on `< lg` screens (too narrow on mobile/tablet)
+- **Structure** (top to bottom inside the pill):
+  1. **Scroll %** — integer percentage of page scrolled, animates with `useMotionValue` + `useTransform`. Updates on `window.scroll` via Framer Motion `useScroll`.
+  2. `done` label — 7px uppercase muted text
+  3. Thin horizontal divider
+  4. **Section dots** — 6 dots, one per section (`about`, `rawaq`, `skills`, `projects`, `experience`, `contact`). Active dot morphs from `4×4px circle` → `4×14px rounded bar` via Framer Motion `layout` animation. Past dots: dim green (`rgba(0,255,136,0.35)`). Upcoming: muted gray.
+  5. Thin horizontal divider
+  6. **Current section name** — rotated 180° vertical text, green, uppercase, 8px, letter-spacing. Animates between section names with Framer Motion `AnimatePresence` (fade + slide).
+- **Pill container**: `background: rgba(8,8,8,0.90)`, `border: 1px solid rgba(0,255,136,0.22)`, `border-radius: 40px`, `backdrop-filter: blur(12px)`, `box-shadow: 0 0 24px rgba(0,255,136,0.08)`
+- Pill entrance: fades in after 1.5s delay (waits for hero animation to complete)
+- Driven by `useActiveSection` hook (shared with Navbar) and Framer Motion `useScroll`
 
 ### `animations.ts`
 - Exports Framer Motion `Variants` objects:
@@ -253,6 +268,10 @@ All Framer Motion animations use `cubic-bezier(0.22, 1, 0.36, 1)` — a fast-out
 | Timeline line draw | On section enter | 1.2s |
 | Contact card stagger | On section enter | 90ms between cards |
 | Navbar underline slide | On active section change | 0.25s |
+| ScrollProgressPill entrance | 1.5s after mount | 0.5s fade-in |
+| Scroll % counter | On scroll (useScroll) | Real-time motion value |
+| Active dot morph (circle→bar) | On section change | 0.3s spring layout |
+| Section name swap | On section change | 0.25s fade + slide |
 | Button hover lift | Hover | 0.2s |
 | Card hover lift | Hover | 0.25s |
 
