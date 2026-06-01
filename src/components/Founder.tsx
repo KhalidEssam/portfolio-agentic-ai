@@ -6,21 +6,21 @@ import SectionHeader from "./ui/SectionHeader";
 import { staggerContainer, pillPop } from "@/lib/animations";
 
 const STACK_TAGS = [
-  { label: "Next.js",            variant: "violet" },
-  { label: "React Native",       variant: "violet" },
-  { label: "Supabase PostgreSQL",variant: "green"  },
-  { label: "Realtime + RLS",     variant: "green"  },
-  { label: "Redis / Upstash",    variant: "green"  },
-  { label: "Serverless",         variant: "neutral"},
-  { label: "OTA Updates",        variant: "neutral"},
-  { label: "TypeScript",         variant: "neutral"},
+  { label: "Next.js", variant: "violet" },
+  { label: "React Native", variant: "violet" },
+  { label: "Supabase PostgreSQL", variant: "green" },
+  { label: "Realtime + RLS", variant: "green" },
+  { label: "Redis / Upstash", variant: "green" },
+  { label: "Serverless", variant: "neutral" },
+  { label: "OTA Updates", variant: "neutral" },
+  { label: "TypeScript", variant: "neutral" },
 ] as const;
 
 type TagVariant = "green" | "violet" | "neutral";
 
 const TAG_STYLES: Record<TagVariant, { border: string; color: string; bg: string }> = {
-  green:   { border: "rgba(0,255,136,0.22)",   color: "#00ff88", bg: "rgba(0,255,136,0.08)"   },
-  violet:  { border: "rgba(139,92,246,0.22)",  color: "#a78bfa", bg: "rgba(139,92,246,0.10)"  },
+  green: { border: "rgba(0,255,136,0.22)", color: "#00ff88", bg: "rgba(0,255,136,0.08)" },
+  violet: { border: "rgba(139,92,246,0.22)", color: "#a78bfa", bg: "rgba(139,92,246,0.10)" },
   neutral: { border: "rgba(255,255,255,0.07)", color: "#64748b", bg: "rgba(255,255,255,0.03)" },
 };
 
@@ -194,7 +194,7 @@ export default function Founder() {
               </motion.div>
 
               <motion.a
-                href="https://rawaq.app"
+                href="https://rawaq-meet.vercel.app"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex-shrink-0 px-4 py-1.5 rounded-lg text-[10px] font-semibold transition-colors"
